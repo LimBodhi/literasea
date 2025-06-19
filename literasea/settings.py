@@ -95,6 +95,11 @@ WSGI_APPLICATION = "literasea.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Debug print untuk melihat environment variables
+print(f"DEBUG env var: '{os.getenv('DEBUG', 'NOT_SET')}'")
+print(f"DATABASE_URL env var: '{os.getenv('DATABASE_URL', 'NOT_SET')}'")
+print(f"DEVELOPMENT_MODE: {DEVELOPMENT_MODE}")
+
 if DEVELOPMENT_MODE is True:
     DATABASES = {
         "default": {
@@ -104,7 +109,9 @@ if DEVELOPMENT_MODE is True:
     }
 else:
     # Production database configuration
-    if os.getenv("DATABASE_URL", None) is None:
+    database_url = os.getenv("DATABASE_URL", None)
+    if database_url is None:
+        print("No DATABASE_URL found, using SQLite fallback")
         # Fallback to SQLite if no DATABASE_URL
         DATABASES = {
             "default": {
@@ -113,8 +120,9 @@ else:
             }
         }
     else:
+        print(f"Using DATABASE_URL: {database_url[:50]}...")
         DATABASES = {
-            "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+            "default": dj_database_url.parse(database_url),
         }
 
 
