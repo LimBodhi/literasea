@@ -36,7 +36,7 @@ DEBUG = os.getenv("DEBUG", DEV) == "True"
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", DEV) == "True"
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,.vercel.app,.koyeb.app").split(",")
 
 
 # Application definition
@@ -102,7 +102,8 @@ if DEVELOPMENT_MODE is True:
             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != "collectstatic":
+else:
+    # Production database configuration
     if os.getenv("DATABASE_URL", None) is None:
         raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {

@@ -8,6 +8,7 @@ django-compressor==4.5.1
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
 docopt==0.6.2
+gunicorn==23.0.0
 idna==3.10
 load-dotenv==0.1.0
 pipreqs==0.4.13
